@@ -8,7 +8,7 @@ module.exports ={
         ecmaVersion: 6,//es6
         sourceType: "module", //es模块 module
     },
-    rules: {
-        "no-var": 2, //禁止用var定义变量
-    },
+    // rules: {
+    //     "no-var": 2, //禁止用var定义变量
+    // },
 }
