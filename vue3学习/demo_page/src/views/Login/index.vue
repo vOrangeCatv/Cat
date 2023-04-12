@@ -37,9 +37,9 @@
   export default {
     name: "Login",
     setup() {
-      let loginData=reactive({// eslint-disable-line no-unused-vars
+      let loginData=reactive({
         name:'',
-        password:''
+        password:'',
       })
         //先判断账号是否输入
         let jiaohu =()=>{
@@ -51,12 +51,12 @@
           //执行登录操作
           login(loginData).then(res=>{
             console.log(res)
-            router.push('/Home')
+            router.push('/')
           })
         }
       return{
         loginData,
-        jiaohu
+        jiaohu,
       }
     },
   };

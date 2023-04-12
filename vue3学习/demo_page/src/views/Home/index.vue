@@ -26,14 +26,14 @@
       </div>
       <div class="input-handle">
         <div class="left">
-          {{missionList.length}}个任务未完成
+          {{unfinishedList.length}}个任务未完成
         </div>
         <div class="right">
+          <div class="right-button" v-for="(item,index) in buttonList" :key='index' @click="tabClick(item,index)">
+        <div :class="index===listShow?'right-button-border':''"> {{item.name}}</div>
+    </div>
           <div class="right-button">
-            所有任务
-          </div>
-          <div class="right-button">
-            未完成
+            {{missionList.length}}未完成
           </div>
           <div class="right-button">
             已完成
@@ -41,20 +41,42 @@
         </div>
       </div>
       <div class="list-content">
-        <div class="list-title">任务列表：</div>
-        <div class="list-box">
+    <div class="list-title">任务列表：</div>
 
-          <div class="list-item" v-for="(item,index) in missionList" :key="index">
+    <div class="list-box" v-show="listShow===0">
+        <div class="list-item" v-for="(item,index) in missionList" :key="index" @click="checkboxChange(item)">
             <span class="list-check-box">
-              <span class="list-check-show"><el-icon><CircleCheckFilled /></el-icon></span>
+                <span :class="item.check?'list-check-show':'list-check-hidden'">√</span>
             </span>
-            <span>
-              {{ item.title }}
+            <span :class="item.check?'list-check-decoration':''">
+              {{item.title}}
             </span>
-          </div>
         </div>
+    </div>
+    
+        <div class="list-box" v-show="listShow===1">
+        <div class="list-item" v-for="(item,index) in unfinishedList" :key="index" @click="checkboxChange(item)">
+            <span class="list-check-box">
+                <span :class="item.check?'list-check-show':'list-check-hidden'">√</span>
+            </span>
+            <span :class="item.check?'list-check-decoration':''">
+              {{item.title}}
+            </span>
+        </div>
+    </div>
+    
+        <div class="list-box" v-show="listShow===2">
+        <div class="list-item" v-for="(item,index) in finishedList" :key="index" @click="checkboxChange(item)">
+            <span class="list-check-box">
+                <span :class="item.check?'list-check-show':'list-check-hidden'">√</span>
+            </span>
+            <span :class="item.check?'list-check-decoration':''">
+              {{item.title}}
+            </span>
+        </div>
+    </div>
 
-      </div>
+</div>
     </div>
   </div>
       </div>
@@ -67,19 +89,37 @@
 <script>
 
 export default {
+  checkboxChange(item) {
+    item.check = !item.check
+},
   beforeCreate() {
   document
       .querySelector('body')
       .setAttribute('style', 'background-color:#F2F3F5')
 },
 
-
+//定义Todolist里的mission和placeholder
 data() {
-      return {
-         mission: '',
-         placeholder: '回车即可添加任务',
-         missionList:[]
-      }
+  return {
+
+        missionList: [],// 已有数组
+        finishedList: [],
+        unfinishedList: [],
+        listShow: 0,
+        buttonList: [{
+                name: '所有任务',
+                value: 0
+            },
+            {
+                name: '未完成的任务',
+                value: 1
+            },
+            {
+                name: '已完成的任务',
+                value: 2
+            }
+        ],
+    }
     },
     methods:{
       addList() {
@@ -96,7 +136,24 @@ data() {
         this.missionList.unshift(obj)
         this.mission = ""
       },
+      tabClick(item,index){
+        this.listShow = index
+        switch (item.value) {
+          case 0:
+            this.missionList = this.missionList
+            break;
+          case 1:
+            this.unfinishedList = this.missionList.filter(item => item.check === false)
+            break;
+          case 2:
+            this.finishedList = this.missionList.filter(item => item.check === true)
+            break;
+          default:
+            break;
+        }
     }
+    }
+    
   }
 
 

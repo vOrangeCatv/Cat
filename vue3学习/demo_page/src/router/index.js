@@ -39,13 +39,17 @@ const routes = [
   {
     path: '/login',
     name: 'login',
-    component: Login
+    component: Login,
+    meta:{
+      isShow:false,
+    }
   },
 ];
 
 const router = createRouter({
+  routes:routes,
   history: createWebHistory(process.env.BASE_URL),
-  routes,
+  
 });
 
 export default router;
